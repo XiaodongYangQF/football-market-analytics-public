@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="385" viewBox="0 0 1000 385" role="img" aria-label="Public V2 early research snapshot: 34 settled signals, 11.18 percent weighted simulated ROI, plus 3.8 units profit; OU plus 4.1875 units, AH minus 0.3875 units">
+<rect width="1000" height="385" rx="22" fill="#0B1120"/>
+<rect x="16" y="16" width="968" height="353" rx="18" fill="#111E31" stroke="#28415B"/>
+<text x="43" y="56" fill="#56d6cc" font-size="14" font-family="Arial, sans-serif" font-weight="700" letter-spacing="2">PUBLIC V2 · 08 NOV 2026 SNAPSHOT</text>
+<text x="43" y="98" fill="#f0f5ff" font-size="27" font-family="Arial, sans-serif" font-weight="700">Early simulated performance</text>
+<g transform="translate(43 122)">
+<rect x="0" width="282" height="115" rx="14" fill="#172B42" stroke="#32506A"/>
+<text x="22" y="34" fill="#9FB6CF" font-size="15" font-family="Arial, sans-serif">Settled signals</text>
+<text x="22" y="87" fill="#F0F5FF" font-size="44" font-weight="700" font-family="Arial, sans-serif">34</text>
+<rect x="300" width="282" height="115" rx="14" fill="#172B42" stroke="#32506A"/>
+<text x="322" y="34" fill="#9FB6CF" font-size="15" font-family="Arial, sans-serif">Weighted ROI</text>
+<text x="322" y="87" fill="#59D9C8" font-size="44" font-weight="700" font-family="Arial, sans-serif">+11.18%</text>
+<rect x="600" width="298" height="115" rx="14" fill="#172B42" stroke="#32506A"/>
+<text x="622" y="34" fill="#9FB6CF" font-size="15" font-family="Arial, sans-serif">Net simulated P&amp;L</text>
+<text x="622" y="87" fill="#59D9C8" font-size="44" font-weight="700" font-family="Arial, sans-serif">+3.80u</text>
+</g>
+<text x="43" y="272" fill="#B4C7DC" font-size="17" font-family="Arial, sans-serif">AH</text>
+<rect x="100" y="251" width="8" height="24" rx="4" fill="#7799D3"/>
+<text x="120" y="271" fill="#E8F0F8" font-size="17" font-family="Arial, sans-serif">−0.3875u</text>
+<text x="400" y="272" fill="#B4C7DC" font-size="17" font-family="Arial, sans-serif">OU</text>
+<rect x="454" y="251" width="215" height="24" rx="6" fill="#59D9C8"/>
+<text x="684" y="271" fill="#E8F0F8" font-size="17" font-family="Arial, sans-serif">+4.1875u</text>
+<path d="M43 302H957" stroke="#27405A"/>
+<text x="43" y="333" fill="#92A9C1" font-size="14" font-family="Arial, sans-serif">34 market signals across 24 fixtures · Nominal stake 1u per signal · Not verified live trading performance</text>
+</svg>

@@ -1,0 +1,202 @@
+{
+  "schema": "FMA_ELIGIBILITY_POLICY_V1",
+  "season": "2026-27",
+  "valid_from": "2026-07-01",
+  "valid_before": "2027-07-01",
+  "leagues": {
+    "E0": {
+      "roster": [
+        "Arsenal",
+        "Aston Villa",
+        "Bournemouth",
+        "Brentford",
+        "Brighton",
+        "Chelsea",
+        "Coventry",
+        "Crystal Palace",
+        "Everton",
+        "Fulham",
+        "Hull",
+        "Ipswich",
+        "Leeds",
+        "Liverpool",
+        "Man City",
+        "Man United",
+        "Newcastle",
+        "Nott'm Forest",
+        "Sunderland",
+        "Tottenham"
+      ],
+      "promoted": [
+        "Coventry",
+        "Hull",
+        "Ipswich"
+      ]
+    },
+    "D1": {
+      "roster": [
+        "Augsburg",
+        "Bayern Munich",
+        "Dortmund",
+        "Ein Frankfurt",
+        "Elversberg",
+        "FC Koln",
+        "Freiburg",
+        "Hamburg",
+        "Hoffenheim",
+        "Leverkusen",
+        "M'gladbach",
+        "Mainz",
+        "Paderborn",
+        "RB Leipzig",
+        "Schalke 04",
+        "Stuttgart",
+        "Union Berlin",
+        "Werder Bremen"
+      ],
+      "promoted": [
+        "Schalke 04",
+        "Elversberg",
+        "Paderborn"
+      ]
+    },
+    "SP1": {
+      "roster": [
+        "Alaves",
+        "Ath Bilbao",
+        "Ath Madrid",
+        "Barcelona",
+        "Betis",
+        "Celta",
+        "Elche",
+        "Espanol",
+        "Getafe",
+        "La Coruna",
+        "Levante",
+        "Malaga",
+        "Osasuna",
+        "Real Madrid",
+        "Santander",
+        "Sevilla",
+        "Sociedad",
+        "Valencia",
+        "Vallecano",
+        "Villarreal"
+      ],
+      "promoted": [
+        "Santander",
+        "La Coruna",
+        "Malaga"
+      ]
+    },
+    "I1": {
+      "roster": [
+        "Atalanta",
+        "Bologna",
+        "Cagliari",
+        "Como",
+        "Fiorentina",
+        "Frosinone",
+        "Genoa",
+        "Inter",
+        "Juventus",
+        "Lazio",
+        "Lecce",
+        "Milan",
+        "Monza",
+        "Napoli",
+        "Parma",
+        "Roma",
+        "Sassuolo",
+        "Torino",
+        "Udinese",
+        "Venezia"
+      ],
+      "promoted": [
+        "Venezia",
+        "Frosinone",
+        "Monza"
+      ]
+    },
+    "F1": {
+      "roster": [
+        "Angers",
+        "Auxerre",
+        "Brest",
+        "Le Havre",
+        "Le Mans",
+        "Lens",
+        "Lille",
+        "Lorient",
+        "Lyon",
+        "Marseille",
+        "Monaco",
+        "Nice",
+        "Paris FC",
+        "Paris SG",
+        "Rennes",
+        "Strasbourg",
+        "Toulouse",
+        "Troyes"
+      ],
+      "promoted": [
+        "Troyes",
+        "Le Mans"
+      ]
+    }
+  },
+  "aliases": {
+    "E0": {
+      "Coventry City": "Coventry",
+      "Hull City": "Hull",
+      "Ipswich Town": "Ipswich"
+    },
+    "D1": {
+      "FC Schalke 04": "Schalke 04",
+      "SV Elversberg": "Elversberg",
+      "SC Paderborn 07": "Paderborn",
+      "FC Paderborn 07": "Paderborn",
+      "Bayern München": "Bayern Munich",
+      "VfB Stuttgart": "Stuttgart",
+      "Hamburger SV": "Hamburg",
+      "Köln": "FC Koln",
+      "Frankfurt": "Ein Frankfurt",
+      "Bayern": "Bayern Munich"
+    },
+    "SP1": {
+      "Racing Santander": "Santander",
+      "Real Racing Club": "Santander",
+      "RC Deportivo": "La Coruna",
+      "Deportivo La Coruña": "La Coruna",
+      "Deportivo A Coruña": "La Coruna",
+      "Málaga CF": "Malaga",
+      "Malaga CF": "Malaga",
+      "Deportivo Alavés": "Alaves",
+      "Espanyol": "Espanol",
+      "Atlético Madrid": "Ath Madrid",
+      "Málaga": "Malaga",
+      "Real Betis": "Betis",
+      "Real Sociedad": "Sociedad",
+      "Athletic Club": "Ath Bilbao",
+      "Celta Vigo": "Celta"
+    },
+    "I1": {
+      "Venezia FC": "Venezia",
+      "Frosinone Calcio": "Frosinone",
+      "AC Monza": "Monza"
+    },
+    "F1": {
+      "ESTAC Troyes": "Troyes",
+      "Le Mans FC": "Le Mans",
+      "PSG": "Paris SG"
+    }
+  },
+  "source_urls": {
+    "E0": "https://www.premierleague.com/en/news/4673099/the-202627-premier-league-season-officially-starts",
+    "D1": "https://www.bundesliga.com/en/bundesliga/news/how-will-schalke-elversberg-paderborn-fare-promotion-38278",
+    "SP1": "https://www.laliga.com/noticias/laliga-da-la-bienvenida-a-los-siete-clubes-ascendidos-para-la-temporada-2026-27",
+    "I1": "https://www.legaseriea.it/serie-a/news/le-neopromosse-alla-prova-della-serie-a",
+    "F1": "https://ligue1.com/fr/articles/l1_article_5106-bastia-le-mans-le-score-de-0-2-enterine"
+  },
+  "note": "Public club-eligibility metadata only. Frozen scientific engine and private market data are not included."
+}

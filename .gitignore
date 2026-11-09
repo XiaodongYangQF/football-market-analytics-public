@@ -1,0 +1,38 @@
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+*.pyc
+*.sqlite
+*.db
+.DS_Store
+*.zip
+runtime_data/
+private_data/
+private/
+artifacts/
+exports/
+logs/
+backups/
+*token*
+*secret*
+
+# Never commit virtual environment backups or locally generated forecast archives
+.venv*/
+local_data/
+*.bak.json
+
+# P8.1C-2 private real-model evidence must always stay off-repository
+*private*parity*.json
+*parity*cases*.json
+*runtime*baseline*.json
+*runtime*report*.json
+
+# Season eligibility / filtered parity evidence is private and must never be published
+eligible_cases.json
+eligibility_coverage.json
+mac_baseline_eligible.json
