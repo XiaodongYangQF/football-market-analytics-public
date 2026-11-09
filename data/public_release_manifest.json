@@ -1,0 +1,15 @@
+{
+  "schema": "FMA_PUBLIC_RELEASE_MANIFEST_V1",
+  "released_at_utc": "2026-11-09T14:49:40.527129+00:00",
+  "source_public_snapshot_sha256": "0d94700777608fc479afe62b1cf868239a70459f7bfe99b31423cb67bea930b4",
+  "records_sha256": "9c0162be87a73cb66ed9b3c84c65f6aefe7cd151e2932f4076e57330774c2fab",
+  "row_count": 67,
+  "settled_signals": 34,
+  "no_signal_rows": 31,
+  "not_recorded_rows": 2,
+  "pending_rows": 0,
+  "turnover_u": 34.0,
+  "pnl_u": 3.8,
+  "roi_pct": 11.176470588235295,
+  "note": "Manual public snapshot release; does not prove pre-kickoff publication or real trades."
+}
