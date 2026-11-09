@@ -1,6 +1,12 @@
 # Football Market Analytics
 
-### Public quantitative research portfolio · P8.1B integrated edition
+### Public quantitative research portfolio · Hosted research dashboard
+
+**[Live Streamlit app](https://football-market-analytics.streamlit.app/)** · **[GitHub repository](https://github.com/XiaodongYangQF/football-market-analytics-public)** · **[Public pre-match receipt Issues](https://github.com/XiaodongYangQF/football-market-analytics-public/issues)**
+
+**Public landing page:** `Performance overview` (historical simulated performance). The separate `Pre-match archive` remains empty until genuinely prospective receipts are published. **Hosted interactive forecasts are not enabled** until the private scientific backend passes independent deployment controls. The public website does not access the owner's Mac or Private model.
+
+Operations: [Public launch / README handoff (中文)](P8_2D_PUBLIC_LAUNCH_CN.md) · [First genuine pre-match receipt acceptance (中文)](P8_2E_FIRST_RECEIPT_ACCEPTANCE_CN.md).
 
 Football Market Analytics combines **historical AH/OU performance evaluation** with the real **P7.4 prematch input workflow** in one Streamlit interface. It preserves the distinction between (a) a public GitHub repository with no scientific engine and (b) an **owner-local Mac preview** that can invoke the pre-existing, frozen P7 prediction worker from a separate Private installation.
 

@@ -51,9 +51,14 @@ all_rows = release["records"]
 
 with st.sidebar:
     st.markdown("### ⚽ FMA Research")
-    st.caption("Public research · forecast preview")
-    page = st.radio("Explore", ["Interactive forecast", "Pre-match archive", "Performance overview", "Forecast ledger", "Methodology & limits"],
-                    label_visibility="collapsed")
+    st.caption("Public research · simulated performance")
+    st.markdown("[Source code & public record history](https://github.com/XiaodongYangQF/football-market-analytics-public)")
+    # Put auditable results first for public visitors. Real-time forecasts remain gated.
+    page = st.radio(
+        "Explore",
+        ["Performance overview", "Pre-match archive", "Forecast ledger", "Methodology & limits", "Interactive forecast"],
+        label_visibility="collapsed",
+    )
     st.divider()
     if page != "Interactive forecast":
         markets = st.multiselect("Market", ["AH", "OU"], default=["AH", "OU"])
