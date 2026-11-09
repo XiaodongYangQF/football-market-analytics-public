@@ -26,4 +26,4 @@ Do not combine both populations as if the retrospective historical cohort had be
 
 ## Operational documents
 
-See `P8_1E_PREMATCH_RECEIPTS_CN.md` for complete Mac installation, CLI examples, public-repo prerequisite, resume behavior and daily settlement synchronization.
+See `P8_1E_PREMATCH_RECEIPTS.md` for complete Mac installation, CLI examples, public-repo prerequisite, resume behavior and daily settlement synchronization.

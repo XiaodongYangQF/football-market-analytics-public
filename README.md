@@ -6,7 +6,7 @@
 
 **Public landing page:** `Performance overview` (historical simulated performance). The separate `Pre-match archive` remains empty until genuinely prospective receipts are published. **Hosted interactive forecasts are not enabled** until the private scientific backend passes independent deployment controls. The public website does not access the owner's Mac or Private model.
 
-Operations: [Public launch / README handoff (中文)](P8_2D_PUBLIC_LAUNCH_CN.md) · [First genuine pre-match receipt acceptance (中文)](P8_2E_FIRST_RECEIPT_ACCEPTANCE_CN.md).
+Operations: [Public launch](P8_2D_PUBLIC_LAUNCH.md) · [First pre-match receipt acceptance](P8_2E_FIRST_RECEIPT_ACCEPTANCE.md) · [Local Public receipt bridge](P8_2F_LOCAL_PUBLIC_RECEIPT_BRIDGE.md).
 
 Football Market Analytics combines **historical AH/OU performance evaluation** with the real **P7.4 prematch input workflow** in one Streamlit interface. It preserves the distinction between (a) a public GitHub repository with no scientific engine and (b) an **owner-local Mac preview** that can invoke the pre-existing, frozen P7 prediction worker from a separate Private installation.
 
@@ -62,7 +62,7 @@ This launcher reads **only** `FMA_SCIENCE_ROOT` and `FMA_DATA_ROOT` from the exi
 
 The bridge uses the genuine frozen P7 worker with a **strict AH/OU result allowlist**; any absent model or unsafe response fails closed. The runner's existence check is **not evidence of real parity**; verify an actual unchanged input against Local Public before accepting the installation.
 
-For full Mac instructions see [INSTALL_CN.md](INSTALL_CN.md).
+For complete Mac instructions see [INSTALL.md](INSTALL.md).
 
 ## What is intentionally NOT included
 
@@ -129,8 +129,16 @@ For future public timestamp evidence of genuinely pre-kickoff signals, see the s
 
 The `Pre-match archive` tab is a **separate** prospective evidence track. Owner-local P7.4 JSON exports can be published in explicitly selected same-kickoff batches by `scripts/publish_prematch_receipt.py`. Each real `--publish` creates a public GitHub Issue with the complete quote inputs/model results first (server-created timestamp); it then commits a SHA-256-checked JSON mirror for portfolio browsing. Ordinary site visitors cannot execute the private model.
 
-This is not immutable notarization, independent bookmaker verification, or evidence of a real bet. User-provided kickoff times remain unverified. The independent P8.1D settlement ledger is not double-counted. See `P8_1E_PREMATCH_RECEIPTS_CN.md` and `docs/prematch_receipts.md`.
+This is not immutable notarization, independent bookmaker verification, or evidence of a real bet. User-provided kickoff times remain unverified. The independent P8.1D settlement ledger is not double-counted. See [P8.1E operating guide](P8_1E_PREMATCH_RECEIPTS.md) and [receipt specification](docs/prematch_receipts.md).
 
+
+## P8.2F — Single-entry Local Public receipt bridge (owner-side only)
+
+The intended future daily workflow is **Private: enter and evaluate once → existing Local Public (8502): freeze the confirmed Public V2 direction → owner-local read-only exporter: verify complete quoted prices and save a sanitized receipt feed → GitHub pre-match Issue: operator-reviewed publication → daily settlement update**.
+
+The bridge **does not** re-run science, invent missing prices, or infer the final public trade direction from the Private raw model. It stops if the Local Public AH/OU published pair is absent, ambiguous, unrecorded or inconsistent with the original evidence. In particular, a test forecast entered only in the owner-local Portfolio (8504) is **not** itself a formal Private-to-8502 publication. Publication remains dry-run by default, requires explicit `--publish` and `PUBLISH` authorization, and should occur before the actual fixture kickoff.
+
+Read the [P8.2F bridge procedure](P8_2F_LOCAL_PUBLIC_RECEIPT_BRIDGE.md). The local-side exporter is installed in the **separate private project**; its executable code and local runtime files are **not** part of this GitHub repository.
 
 ## P8.1C-1 — Authenticated hosted prediction pilot (NOT publicly live)
 
@@ -141,7 +149,7 @@ requires an OIDC authenticated, email-allowlisted user, HTTPS ingress and an
 independently hosted, private frozen scientific runtime. It does **not** grant
 anonymous visitors access to the owner's Mac or enable online predictions on GitHub.
 
-Read [P8.1C 中文交接](P8_1C_HOSTED_PILOT_CN.md) and
+Read the [P8.1C hosted pilot handoff](P8_1C_HOSTED_PILOT.md) and
 [hosted prediction security guide](docs/hosted_prediction.md) before testing.
 Do not store tokens, scientific models, private paths, fixtures or raw odds in GitHub.
 P8.1D daily updates and P8.1E pre-match receipts remain unchanged.
@@ -155,7 +163,7 @@ explicitly selected reference-data files, computes actual Mac P7 worker
 outputs, then checks exact output equality on a separate Linux runtime.
 Private input corpora and baselines must never enter GitHub. This feature
 **does not** ship private models or expose a prediction service to the public.
-See [`P8_1C2_SCIENTIFIC_PARITY_CN.md`](P8_1C2_SCIENTIFIC_PARITY_CN.md) and
+See [Mac-to-Linux parity guide](P8_1C2_SCIENTIFIC_PARITY.md) and
 [`docs/linux_runtime_migration.md`](docs/linux_runtime_migration.md).
 
 ## P8.1C-2E — Season-aware eligibility gate
@@ -165,6 +173,6 @@ The 2026–27 five-league public roster/promotion policy lives in
 prematch receipt publishing fail closed for current-season promoted clubs,
 unknown teams and unverified seasons. **INELIGIBLE is not NO SIGNAL.**
 For a resumable Mac parity baseline that preserves original checkpoint indices
-and records excluded cases separately, follow [P8_1C2E_ELIGIBILITY_GATE_CN.md](P8_1C2E_ELIGIBILITY_GATE_CN.md).
+and records excluded cases separately, follow the [season eligibility guide](P8_1C2E_ELIGIBILITY_GATE.md).
 No frozen model implementation, performance rule, historic public release or
 private scientific source files are included or changed by this gate.
