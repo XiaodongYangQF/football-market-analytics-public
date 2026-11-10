@@ -12,11 +12,12 @@ import plotly.express as px
 import streamlit as st
 
 from fma_portfolio.metrics import cumulative_by_source_date, group_summary, outcome_counts, summarize
-from fma_portfolio.release import load_release
 from fma_portfolio.prematch_receipts import read_receipts, ReceiptError, reconcile_public_settlement
+from fma_portfolio.unified_history import (
+    load_unified_history, tracked_fixtures, fixture_table_rows, filter_fixture_table, table_page,
+)
 
 ROOT = Path(__file__).resolve().parent
-DATA_PATH = ROOT / "data" / "public_v2.json"
 
 st.set_page_config(
     page_title="Football Market Analytics | Research Portfolio",
@@ -46,8 +47,8 @@ st.markdown("""<style>
 hr { border-color:#23364e; }
 </style>""", unsafe_allow_html=True)
 
-release = load_release(DATA_PATH)
-all_rows = release["records"]
+release, all_rows = load_unified_history(ROOT)
+current_public_rows = release["records"]
 
 with st.sidebar:
     st.markdown("### ⚽ FMA Research")
@@ -68,7 +69,7 @@ with st.sidebar:
         markets = ["AH", "OU"]
         selected_leagues = sorted({r["competition"] for r in all_rows})
     st.divider()
-    st.caption("PUBLIC V2 · fixed-policy snapshot")
+    st.caption("Unified public history · fixed interpretation policy")
     st.caption("Simulated results; not verified live trading returns.")
 
 rows = [r for r in all_rows if r["market"] in markets and r["competition"] in selected_leagues]
@@ -120,8 +121,8 @@ if page == "Pre-match archive":
                 "Under 2.5 odds": r["fixed_under_odds"],
                 "Model generated (local UTC)": r["saved_at_utc"],
                 "Policy": r["policy_version"],
-                "AH public settlement (strict match)": reconcile_public_settlement(r, "AH", all_rows),
-                "OU public settlement (strict match)": reconcile_public_settlement(r, "OU", all_rows),
+                "AH public settlement (strict match)": reconcile_public_settlement(r, "AH", current_public_rows),
+                "OU public settlement (strict match)": reconcile_public_settlement(r, "OU", current_public_rows),
                 "Batch SHA256": item["batch_sha256"],
                 "GitHub Issue": item["github_issue_url"],
             })
@@ -130,7 +131,7 @@ if page == "Pre-match archive":
     right.metric("Recorded fixtures", len(visible))
     third.metric("Published before declared kickoff", sum(x["publication_class"] == "ON_TIME_DECLARED" for x in visible))
     if not visible:
-        st.info("No prospective GitHub receipts have been published yet. Historical Local Public performance is separate and cannot be relabeled retrospectively.")
+        st.info("No prospective GitHub receipts have been published yet. The historical simulated dashboard does not constitute prospective timestamp evidence.")
     else:
         leagues_for_receipts = sorted({x["League"] for x in visible})
         chosen = st.multiselect("League (public receipts)", leagues_for_receipts, default=leagues_for_receipts)
@@ -143,16 +144,17 @@ if page == "Pre-match archive":
         st.caption("Settlement links require an exact match in date, league, teams, direction, line and saved quote (for signals). Unmatched records remain unlinked; receipts never enter P&L a second time.")
 
 elif page == "Performance overview":
-    st.markdown("<div class='eyebrow'>Performance / public V2 cohort</div>", unsafe_allow_html=True)
+    st.markdown("<div class='eyebrow'>Performance / unified historical research</div>", unsafe_allow_html=True)
     a, b, c, d = st.columns(4, gap="medium")
     a.metric("Settled signals", f"{metrics['settled_signals']}")
     b.metric("Weighted ROI", "—" if metrics["roi_pct"] is None else f"{metrics['roi_pct']:+.2f}%")
     c.metric("Simulated P&L", f"{metrics['pnl_u']:+.2f}u")
-    d.metric("Fixture coverage", str(metrics["fixture_count"]))
-    st.markdown("""<div class="note"><b>Research interpretation:</b> Returns are simulated using saved
-    public quotes with 1u stake per settled signal. AH and OU on the same fixture are correlated;
-    short-horizon ROI does not establish a persistent market edge. For OU, quotes are recorded as
-    exploratory rather than confirmed executable prices.</div>""", unsafe_allow_html=True)
+    d.metric("Tracked fixtures", str(tracked_fixtures(rows)))
+    st.markdown("""<div class="note"><b>Research interpretation:</b> Unified simulated AH/OU results
+    include retrospective rule application to archived market observations alongside later recorded
+    Public V2 outcomes. Neither a historical replay nor a saved quotation alone proves publication
+    before kickoff or trade execution. One unit is counted per settled signal; multiple AH/OU
+    observations on a fixture are correlated. OU price executability is unverified.</div>""", unsafe_allow_html=True)
     left, right = st.columns([1.12, 1], gap="large")
     with left:
         st.subheader("Cumulative simulated P&L")
@@ -190,38 +192,77 @@ elif page == "Performance overview":
                                 "fixture_count": "Fixtures", "turnover_u": "Turnover (u)",
                                 "pnl_u": "P&L (u)", "roi_pct": "ROI (%)"})
         st.dataframe(df, use_container_width=True, hide_index=True)
+    st.subheader("Performance by competition")
+    competition_df = pd.DataFrame(group_summary(rows, "competition"))
+    if not competition_df.empty:
+        competition_df = competition_df.rename(columns={
+            "competition": "Competition", "settled_signals": "Settled",
+            "fixture_count": "Fixtures with signals", "turnover_u": "Turnover (u)",
+            "pnl_u": "P&L (u)", "roi_pct": "ROI (%)",
+        })
+        st.dataframe(competition_df, use_container_width=True, hide_index=True)
     outcomes = outcome_counts(rows)
     st.caption("Outcome mix: " + (" · ".join(f"{key.replace('_', ' ').title()}: {val}" for key, val in outcomes.items()) if outcomes else "None"))
 
 elif page == "Forecast ledger":
-    st.subheader("Public V2 forecast ledger")
-    st.caption("This view includes NO SIGNAL and unrecorded rows, but those rows do not contribute to P&L.")
-    states = sorted({r["state"] for r in rows})
-    selected = st.multiselect("Record state", states, default=states)
-    display = []
-    for r in rows:
-        if r["state"] not in selected:
-            continue
-        direction = r["direction"]
-        line = r["line"]
-        line_label = "—" if line is None else f"{line:+g}" if r["market"] == "AH" else f"{line:g}"
-        display.append({
-            "Source date": r["source_date"], "Competition": r["competition"],
-            "Fixture": r["fixture"], "Market": r["market"], "Forecast": direction,
-            "Line": line_label, "Decimal odds": r["decimal_odds"],
-            "Final score": r["final_score"], "State": r["state"],
-            "Settlement": r["settlement"], "P&L (u)": r["pnl_u"],
-            "Price evidence": r["price_evidence"],
-        })
-    frame = pd.DataFrame(display)
-    if frame.empty:
-        st.info("No records match the selected filters.")
+    st.subheader("Historical forecast ledger")
+    st.caption("Fixture-level research archive using one consistent AH/OU public-interpretation policy. "
+               "Missing market observations are shown as a dash, not fabricated NO SIGNAL decisions. "
+               "Multiple recorded lines for the same fixture are retained within one row.")
+    fixture_rows = fixture_table_rows(rows)
+    c_search, c_status, c_sort, c_size = st.columns([3, 2, 2, 1.4], gap="medium")
+    with c_search:
+        query = st.text_input("Find a fixture", placeholder="Team or fixture name")
+    with c_status:
+        result_status = st.selectbox("Result status", ["All statuses", "Finished", "Result pending"])
+    with c_sort:
+        sort_order = st.selectbox("Sort", ["Newest first", "Oldest first", "Fixture A–Z"])
+    with c_size:
+        page_size = st.selectbox("Rows per page", [10, 20, 40, 80, 100], index=1)
+    shown = filter_fixture_table(fixture_rows, query=query, result_status=result_status,
+                                 sort_by=sort_order)
+    filter_signature = (query, result_status, sort_order, page_size,
+                        tuple(markets), tuple(selected_leagues))
+    if st.session_state.get("history_table_signature") != filter_signature:
+        st.session_state["history_table_signature"] = filter_signature
+        st.session_state["history_table_page"] = 1
+    _, current_page, page_count = table_page(shown,
+        st.session_state.get("history_table_page", 1), page_size)
+    st.session_state["history_table_page"] = current_page
+    p_label, p_prev, p_count, p_next = st.columns([6, 1, 1, 1], gap="small")
+    with p_label:
+        st.caption(f"Showing {min(page_size, max(0, len(shown) - (current_page-1)*page_size))} "
+                   f"of {len(shown)} matching fixtures · Page {current_page}/{page_count}")
+    with p_prev:
+        if st.button("‹", disabled=current_page <= 1, help="Previous page", key="history_prev"):
+            st.session_state["history_table_page"] -= 1
+            st.rerun()
+    with p_count:
+        st.caption(f"{current_page} / {page_count}")
+    with p_next:
+        if st.button("›", disabled=current_page >= page_count, help="Next page", key="history_next"):
+            st.session_state["history_table_page"] += 1
+            st.rerun()
+    visible_rows, _, _ = table_page(shown, st.session_state["history_table_page"], page_size)
+    if not visible_rows:
+        st.info("No fixtures match the current filters.")
     else:
-        st.dataframe(frame, use_container_width=True, hide_index=True, height=590)
-        st.download_button("Download filtered public ledger CSV",
-                           data=frame.to_csv(index=False).encode("utf-8-sig"),
-                           mime="text/csv", file_name="fma_public_v2_filtered.csv")
-    st.info("Dates shown are the source snapshot's fixture-date fields. Some have not been independently normalized to official schedules.")
+        frame = pd.DataFrame(visible_rows)
+        st.dataframe(frame, use_container_width=True, hide_index=True, height=min(730, 82+len(frame)*38),
+                     column_config={
+                         "Date": st.column_config.TextColumn(width="small"),
+                         "Competition": st.column_config.TextColumn(width="medium"),
+                         "Fixture": st.column_config.TextColumn(width="large"),
+                         "AH forecast · 1u": st.column_config.TextColumn(width="large"),
+                         "AH result": st.column_config.TextColumn(width="medium"),
+                         "OU forecast · 1u": st.column_config.TextColumn(width="large"),
+                         "OU result": st.column_config.TextColumn(width="medium"),
+                     })
+        st.download_button("Download filtered history (CSV)",
+                           data=pd.DataFrame(shown).to_csv(index=False).encode("utf-8-sig"),
+                           mime="text/csv", file_name="fma_unified_public_history.csv")
+    st.caption("Source fixture dates and archived quotes have not been independently certified "
+               "against official kickoff times or actual executable bookmaker prices.")
 
 else:
     st.subheader("Research objective")
@@ -231,11 +272,12 @@ else:
     st.markdown("""
 - **Source inputs:** pre-match market observations; capture and replay can occur at separate times.
 - **Public output:** previously recorded forecast directions and a transparent simulated settlement ledger.
-- **Scoping:** this dataset contains *only* the post-activation Public V2 cohort, not the earlier strategy or retrospective replays.
+- **Scoping:** the displayed historical history is a combined descriptive ledger: curated retrospective replay plus recorded Public V2, with a single public interpretation policy and recorded market/fixture overlap control. It is **not** a purely prospective or out-of-sample track record.
 - **Settlement:** 1u per recorded signal; Asian quarter-lines allow half-win and half-loss outcomes.
 - **Quote provenance:** AH includes frozen execution quotes; OU includes exploratory main-line quotes, not a guarantee of tradability.
 - **Validation status:** arithmetic has been checked against saved records, not independently certified by a bookmaker or exchange.
-- **Statistical limits:** The initial snapshot contained 34 settled signals across 24 fixtures. Daily updates do not establish a persistent market edge. Multi-market signals within a match are not independent.
+- **Statistical limits:** the initial unified dataset has 102 settled signals across 81 tracked fixtures (72 with a settled signal). It includes development-period replay, so the combined ROI cannot establish out-of-sample profitability. Multi-market signals and repeat quotes within a match are not independent.
+- **Policy interpretation:** the historical AH-A and OU-B source labels are reversed to the corresponding opposing side using the archived opposing quote, before standard 1u settlement. The original private decision conditions are not published.
 - **Public prematch receipts:** GitHub Issue publication and original quoted inputs are archived separately from historical performance. User-declared kickoff times and market quotes are not independently validated.
 - **No live trading:** this public site never accesses a betting account or places bets. Hosted mode cannot call the private forecasting engine; the separate owner-local mode can use its frozen worker.
 """)
@@ -246,4 +288,4 @@ else:
     st.caption("Detailed design and caveats are in docs/methodology.md and docs/evaluation.md.")
 
 st.divider()
-st.caption(f"Release: curated public data only · Source snapshot {release['source_snapshot_generated_at_utc']} · No Private scientific or storage dependencies")
+st.caption(f"Release: public-only historical replay + daily Local Public snapshot ({release['source_snapshot_generated_at_utc']}) · No Private scientific or storage dependencies")

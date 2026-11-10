@@ -19,19 +19,40 @@ Football Market Analytics combines **historical AH/OU performance evaluation** w
 - **Saved forecasts:** in an owner-local preview, generate a real forecast through P7's existing frozen science worker. A forecast is saved to **browser session** only after clicking **Save forecast**. Export or restore an official P7.4-compatible JSON backup; these personal snapshots **never enter official ROI**.
 - **No auto-recording:** Changing a selected fixture clears the unsaved preview; selecting a fixture or typing market data never creates an official prediction.
 
-## Initial Public V2 evaluation snapshot
+## Unified historical research dashboard (P8.2H)
 
-| Measure | Published V2 dataset |
+The public dashboard presents **one fixed-interpretation historical ledger** spanning archived research observations and recorded Public V2 outcomes. Its **initial curated snapshot** has:
+
+| Measure | Unified historical ledger |
 | :-- | --: |
-| Settled signals | **34** (24 distinct fixtures) |
-| Simulated net P&L | **+3.8000u** |
-| Simulated turnover | **34.0u** |
-| Weighted ROI | **+11.18%** |
-| AH, 17 settled | −0.3875u (−2.28%) |
-| OU, 17 settled | +4.1875u (+24.63%) |
-| Additional rows | 31 NO SIGNAL, 2 NOT_RECORDED |
+| Tracked fixtures (including no-signal cases) | **81** |
+| Fixtures with at least one settled signal | **72** |
+| Settled AH/OU signals | **102** |
+| Total simulated stake | **102u** |
+| Simulated net P&L | **+22.9125u** |
+| Stake-weighted ROI | **+22.46%** |
+| AH: 46 settled signals | +9.0625u (+19.70%) |
+| OU: 56 settled signals | +13.8500u (+24.73%) |
 
-*Recorded settlement, **not** actual money won.* The observation window is short; correlated AH/OU wagers, exploratory OU execution quotes and unnormalized source dates limit inference. Never interpret 11.18% as a stable or prospective ROI.
+The interpretation policy preserves recorded B/C-class AH and A-class OU directions,
+while **reversing AH-A and OU-B selections** to the opposing side using archived
+opposing-side odds. No Private rule conditions or source analysis identifiers are
+published. Fixed 2.5 reference-market results are not counted as independent OU signals.
+
+**Methodological limitation:** Some archived observations were retrospectively
+replayed under this interpretation and were involved in the research/development
+period. They are not independently timestamped prospective picks or an out-of-sample
+validation. The combined ROI is **not** a live-trading claim, a verified executable
+return, or an unbiased estimate of future profitability. Official GitHub pre-match
+receipts are displayed in a separate archive and never counted twice. See
+[the methodology](docs/methodology.md) and [the P8.2H update guide](P8_2H_UNIFIED_HISTORY.md).
+
+The fixture-level **Forecast ledger** provides search, result-status filtering,
+sorting, pagination, two AH/OU selections per fixture where available, and CSV export.
+When a public fixture contains multiple recorded prices for the same market,
+each observation is retained and its 1u stake is counted separately. Missing
+historical market evidence is shown as `—`, not imputed as `NO SIGNAL`.
+
 
 ## Run the unified Portfolio, public-safe mode
 
@@ -86,7 +107,9 @@ fma_portfolio/p7/owner_local.py      Mac-only P7 worker bridge (disabled by defa
 scripts/run_owner_local.py           Owner Mac loopback-only launch
 scripts/security_check.py           Publication safety scanning
 scripts/build_public_release.py      Manual refresh from Local Public snapshot
-data/public_v2.json                 Frozen public performance snapshot
+data/public_v2.json                 Daily published Local Public V2 performance snapshot
+data/historical_replay.json          Curated retrospective replay, kept separate from daily snapshot
+fma_portfolio/unified_history.py     Public-only safe combination and fixture ledger
 data/fixtures.csv                  Header-only empty fixture list (licensing gate)
 scripts/check_owner_fixtures.py     Read-only local fixture diagnostic
 docs/                               Evaluation protocol and cloud deployment gates
@@ -102,13 +125,13 @@ tests/                              Public-only reproducibility and boundary tes
 
 ### Privacy and research integrity
 
-The Public V2 rules and 1u settlement policy are not altered by this integration. The source data represent historical *pre-match quotes*, even when an archived record was processed later. Distinguish repeatable historical replays from predictions available to bettors before kickoff. Simulated returns are descriptive; probability calibration and forward-market benchmarks remain part of future research.
+The fixed Public V2 interpretation and 1u settlement policy are not altered by this dashboard update. The source data represent historical *pre-match quotes*, even when an archived record was processed later. Distinguish repeatable historical replays from predictions available to bettors before kickoff. Simulated returns are descriptive; probability calibration and forward-market benchmarks remain part of future research.
 
 Maintained for research portfolio use by GitHub [@XiaodongYangQF](https://github.com/XiaodongYangQF). No betting recommendation, financial guarantee, or live-trade execution. No source/data reuse rights are granted unless a license is separately supplied.
 
 ## Daily performance publishing (P8.1D)
 
-The repository never syncs directly with Private. Updates follow **Private → Local Public (existing manual publication) → curated JSON → this public repository**. A complete snapshot is regenerated each time rather than adding daily profits by hand. This maintains a single audited P&L computation and supports corrected or newly settled events under review.
+The repository never syncs directly with Private. Updates follow **Private → Local Public (existing manual publication) → curated JSON → this public repository**. The Local Public V2 snapshot is regenerated each time rather than adding daily profits by hand. The separate historical replay file stays unchanged; the dashboard combines both at read time, dropping any replay rows for a market superseded by an authoritative published fixture-market. This maintains a single audited P&L computation and supports corrected or newly settled events under review.
 
 ```bash
 # From the public Portfolio repo, with fma-portfolio Conda environment active:

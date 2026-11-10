@@ -80,6 +80,21 @@ def run() -> list[str]:
                     failures.append("Invalid public row text value")
     except (OSError, ValueError, KeyError, TypeError) as exc:
         failures.append(f"Invalid public data release: {exc}")
+    # The retrospective companion data must have the same strict public
+    # allowlist and independently verifiable settlement arithmetic.
+    historical_path = ROOT / "data" / "historical_replay.json"
+    try:
+        from fma_portfolio.daily_publish import validate_settlements
+        historical = json.loads(historical_path.read_text(encoding="utf-8"))
+        validate_settlements(historical)
+        if any(r["state"] != "SETTLED" or r["record"].startswith("V2-")
+               for r in historical["records"]):
+            failures.append("Historical replay contains invalid record states or identifiers")
+        if any(r.get("price_evidence") != "HISTORICAL_REPLAY_QUOTE"
+               for r in historical["records"]):
+            failures.append("Historical replay price evidence is ambiguous")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        failures.append(f"Invalid historical replay: {exc}")
     manifest_path = ROOT / "data" / "public_release_manifest.json"
     if manifest_path.is_file():
         try:
