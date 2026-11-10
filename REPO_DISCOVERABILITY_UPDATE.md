@@ -10,7 +10,7 @@ This update is designed for a broad audience: football-market researchers, data 
 - Adds a GitHub CLI helper to add accurate cross-disciplinary topics and improve the repository description and homepage metadata.
 - Does **not** alter models, algorithms, public data, dashboard UI, GitHub receipts, or performance calculations.
 
-**Research-integrity boundary:** Distributional inference and statistical calibration are presented as *future research questions*, not as already implemented or validated functionality. Bookmaker odds are not equated with arbitrage-free option-implied risk-neutral densities.
+**Research-integrity boundary:** The private P1/P2 OU research already implements **parametric Poisson-equivalent total-goals distribution inference** from fixed O/U 2.5 prices, and settlement-consistent translation to main Asian Total quotations. The public repository does **not** contain that private inference engine. Nonparametric/full joint distribution identification and out-of-sample probability-calibration testing remain research directions. Market-to-Poisson parameter fitting is **not** the same as empirical probability calibration. Bookmaker odds are not equated with arbitrage-free option-implied risk-neutral densities.
 
 ## Installation on macOS
 

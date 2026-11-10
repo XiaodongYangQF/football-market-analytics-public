@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="XiaodongYangQF/football-market-analytics-public"
-TOPICS="football-analytics,sports-analytics,sports-betting,betting-odds,asian-handicap,python,streamlit,data-science,statistics,probability,quantitative-research,quantitative-finance,market-implied-information,backtesting,data-visualization"
+TOPICS="football-analytics,sports-analytics,sports-betting,betting-odds,asian-handicap,python,streamlit,data-science,statistics,probability,quantitative-research,quantitative-finance,market-implied-information,statistical-modeling,probability-distributions,backtesting,data-visualization"
 DESCRIPTION="Football AH/OU research: market-implied information, Asian-line settlement, simulated performance and auditable public records"
 
 if [[ "${1:-}" != "--apply" ]]; then
