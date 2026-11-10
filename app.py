@@ -29,7 +29,186 @@ st.set_page_config(
 st.markdown("""<style>
 :root { --bg: #0b1120; }
 .stApp { background: #0b1120; color: #e8eef8; }
-[data-testid="stSidebar"] { background: #0e1829; border-right: 1px solid #1c2e47; }
+/* FMA sidebar design: product navigation, not a plain Streamlit filter panel. */
+[data-testid="stSidebar"] {
+    background: linear-gradient(155deg, #0f2032 0%, #102238 56%, #0d1b2c 100%);
+    border-right: 1px solid #2b4259;
+    box-shadow: 7px 0 22px rgba(3, 11, 22, .15);
+}
+[data-testid="stSidebar"] > div,
+[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+    background: transparent;
+}
+[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+    padding: 1.45rem 1.05rem 1.6rem;
+}
+.fma-side-brand {
+    display: flex;
+    align-items: center;
+    gap: .74rem;
+    padding: .55rem .15rem 1.05rem;
+    border-bottom: 1px solid rgba(147, 176, 200, .15);
+}
+.fma-side-logo {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    background: linear-gradient(145deg, #183447, #102737);
+    border: 1px solid #3a5d6d;
+    border-radius: 13px;
+    font-size: 21px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+.fma-side-brand-title {
+    font-weight: 760;
+    color: #eff8ff;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+    font-size: 1rem;
+}
+.fma-side-brand-caption {
+    color: #9cb7ca;
+    font-size: .72rem;
+    margin-top: 4px;
+    letter-spacing: .01em;
+}
+.fma-side-section {
+    margin: 1.18rem 0 .42rem;
+    color: #8da9bc;
+    text-transform: uppercase;
+    font-size: .65rem;
+    letter-spacing: .18em;
+    font-weight: 800;
+    line-height: 1.5;
+}
+.fma-side-section--first { margin-top: 1.08rem; }
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] {
+    gap: .12rem;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label {
+    position: relative;
+    display: flex;
+    min-height: 2.43rem;
+    align-items: center;
+    padding: .48rem .62rem !important;
+    border-radius: 10px;
+    border: 1px solid transparent !important;
+    color: #c2d2e1;
+    transition: background-color .16s ease, border-color .16s ease, color .16s ease;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:hover {
+    background: rgba(110, 158, 188, .10);
+    border-color: rgba(119, 164, 192, .13) !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked) {
+    background: linear-gradient(95deg, rgba(87, 151, 161, .23), rgba(92, 130, 161, .14));
+    border-color: rgba(89, 162, 181, .24) !important;
+    box-shadow: inset 3px 0 0 #52d6ca;
+    color: #eefaff;
+    font-weight: 670;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:focus-within {
+    outline: 2px solid rgba(105, 225, 208, .55);
+    outline-offset: 1px;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label p {
+    color: inherit;
+    font-size: .89rem;
+    line-height: 1.25;
+}
+/* Keep the native radio input and labels: navigation remains keyboard accessible. */
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] {
+    margin-bottom: .22rem;
+}
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] [data-baseweb="select"] > div {
+    background: rgba(8, 22, 37, .72) !important;
+    border: 1px solid #354d63 !important;
+    border-radius: 10px !important;
+    box-shadow: inset 0 1px 1px rgba(1, 9, 19, .22);
+    min-height: 2.45rem;
+}
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] [data-baseweb="select"] > div:focus-within {
+    border-color: #56c8be !important;
+    box-shadow: 0 0 0 2px rgba(82, 214, 202, .13);
+}
+[data-testid="stSidebar"] [data-baseweb="tag"] {
+    background: #285960 !important;
+    border: 1px solid rgba(115, 216, 207, .25) !important;
+    border-radius: 6px !important;
+    color: #edfffd !important;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+[data-testid="stSidebar"] [data-baseweb="tag"] span,
+[data-testid="stSidebar"] [data-baseweb="tag"] svg {
+    color: #edfffd !important;
+    fill: none;
+}
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+    color: #ceddea;
+    font-weight: 600;
+    font-size: .79rem;
+}
+.fma-side-snapshot {
+    padding: .82rem .9rem;
+    background: rgba(11, 31, 49, .72);
+    border: 1px solid rgba(120, 167, 192, .20);
+    border-radius: 12px;
+    color: #bfd0df;
+    line-height: 1.55;
+    font-size: .75rem;
+}
+.fma-side-snapshot-title {
+    display: flex;
+    align-items: center;
+    gap: .48rem;
+    color: #ebf7ff;
+    font-size: .76rem;
+    font-weight: 700;
+    margin-bottom: .34rem;
+}
+.fma-side-status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    background: #64d6c6;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(100, 214, 198, .12);
+}
+.fma-side-snapshot-secondary { color: #8da8bb; }
+.fma-side-links {
+    display: grid;
+    gap: .26rem;
+    padding-bottom: .35rem;
+}
+.fma-side-links a {
+    display: block;
+    padding: .48rem .65rem;
+    border: 1px solid rgba(111, 162, 189, .15);
+    border-radius: 9px;
+    background: rgba(20, 46, 68, .38);
+    color: #bdd6e6 !important;
+    font-size: .77rem;
+    font-weight: 630;
+    text-decoration: none !important;
+    transition: background-color .15s ease, border-color .15s ease;
+}
+.fma-side-links a:hover,
+.fma-side-links a:focus-visible {
+    background: rgba(61, 110, 139, .25);
+    border-color: rgba(104, 208, 197, .35);
+    color: #f1ffff !important;
+}
+@media (max-width: 768px) {
+    [data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        padding: 1.05rem .82rem 1.25rem;
+    }
+}
+
 .block-container { padding-top: 2.1rem; max-width: 1350px; }
 .hero { background: linear-gradient(130deg,#122842 0%,#10283b 45%,#0e302c 100%);
     border:1px solid #2b4255; border-radius:20px; padding:30px 34px; margin-bottom: 24px; }
@@ -51,16 +230,20 @@ release, all_rows = load_unified_history(ROOT)
 current_public_rows = release["records"]
 
 with st.sidebar:
-    st.markdown("### ⚽ FMA Research")
-    st.caption("Public research · simulated performance")
-    st.markdown("[Source code & public record history](https://github.com/XiaodongYangQF/football-market-analytics-public)")
-    # Put auditable results first for public visitors. Real-time forecasts remain gated.
+    st.markdown("""<div class="fma-side-brand">
+      <span class="fma-side-logo" aria-hidden="true">⚽</span>
+      <div><div class="fma-side-brand-title">FMA Research</div>
+      <div class="fma-side-brand-caption">Football market intelligence<br>AH · Asian Total</div></div>
+    </div>""", unsafe_allow_html=True)
+    st.markdown('<div class="fma-side-section fma-side-section--first">Research</div>',
+                unsafe_allow_html=True)
+    # Preserve the native radio and filters; only their presentation changes.
     page = st.radio(
         "Explore",
         ["Performance overview", "Pre-match archive", "Forecast ledger", "Methodology & limits", "Interactive forecast"],
         label_visibility="collapsed",
     )
-    st.divider()
+    st.markdown('<div class="fma-side-section">Filters</div>', unsafe_allow_html=True)
     if page != "Interactive forecast":
         markets = st.multiselect("Market", ["AH", "OU"], default=["AH", "OU"])
         leagues = sorted({r["competition"] for r in all_rows})
@@ -68,9 +251,20 @@ with st.sidebar:
     else:
         markets = ["AH", "OU"]
         selected_leagues = sorted({r["competition"] for r in all_rows})
-    st.divider()
-    st.caption("Unified public history · fixed interpretation policy")
-    st.caption("Simulated results; not verified live trading returns.")
+        st.caption("Filters are applied to the public research pages.")
+    st.markdown('<div class="fma-side-section">Public data</div>', unsafe_allow_html=True)
+    st.markdown("""<div class="fma-side-snapshot">
+      <div class="fma-side-snapshot-title"><span class="fma-side-status-dot"></span>Research snapshot</div>
+      <div>Unified public interpretation policy</div>
+      <div class="fma-side-snapshot-secondary">Simulated results · Not verified live trading</div>
+    </div>""", unsafe_allow_html=True)
+    st.markdown('<div class="fma-side-section">Links</div>', unsafe_allow_html=True)
+    st.markdown("""<div class="fma-side-links">
+      <a href="https://github.com/XiaodongYangQF/football-market-analytics-public"
+         target="_blank" rel="noopener noreferrer">Source code & public record history ↗</a>
+      <a href="https://github.com/XiaodongYangQF/football-market-analytics-public/issues"
+         target="_blank" rel="noopener noreferrer">Public forecast receipts ↗</a>
+    </div>""", unsafe_allow_html=True)
 
 rows = [r for r in all_rows if r["market"] in markets and r["competition"] in selected_leagues]
 metrics = summarize(rows)
