@@ -18,9 +18,9 @@ Financial markets and sports markets both express expectations about uncertain f
 
 Writing home and away goals as \(G_H,G_A\), the two key observables are goal difference \(D=G_H-G_A\) and total goals \(T=G_H+G_A\). AH and OU quotes therefore carry complementary, incomplete information about the eventual match score.
 
-**Distributional inference is already part of the underlying private OU research.** Under an explicit Poisson assumption, the workflow adjusts fixed Over/Under 2.5 market prices for the bookmaker margin and infers a *Poisson-equivalent distribution of total goals*. Alongside model-based total-goals estimates, this supports settlement-consistent theoretical pricing at the observed main Asian Total line and comparison against its quoted odds. The private P1/P2 research implements this **parametric market-implied distribution inference and Asian-line translation**; its model internals and signal rules are not shipped in this public repository.
+These parallels motivate the research, but sportsbook odds are not the same as option-implied risk-neutral densities: quotes may also reflect bookmaker margins, risk management, customer demand, and other market frictions. Individual AH or OU quotations do not uniquely identify the full score distribution.
 
-This parallels option-implied information extraction at the level of the research question, **not** as a claim of identical pricing measures. Bookmaker odds are not option-implied risk-neutral densities: they may reflect overround, risk management, customer demand and market frictions. A fixed 2.5 quote identifies a Poisson-equivalent intensity *only conditional on the chosen model and quote normalization*; it does not nonparametrically identify the true total-goals distribution, the full joint score distribution or any uniquely defined physical probability measure. More flexible distributional recovery and empirical probability-calibration tests remain **research directions**, not completed public-dashboard capabilities.
+The underlying private research already incorporates **market-implied parameter estimation**, **model-based distribution recovery**, and **quantitative pricing comparisons**, drawing on concepts from financial economics, probability theory, and statistical inference. Broader investigation of pricing distortions and out-of-sample probability calibration remains part of the research agenda.
 
 The practical question is:
 
@@ -81,20 +81,20 @@ This calculation settles an illustrative saved quote; it does not forecast the m
 The research perspective is broader than selecting a winning team:
 
 - **Market-implied information:** AH and OU prices provide partial, potentially noisy signals about the distributions of goal difference and total goals.
-- **Parametric distributional inference (implemented in private research):** A Poisson-equivalent total-goals distribution is inferred from fixed 2.5 prices, then used in theoretical Asian-line price translation. For discrete goal counts the relevant functions are a probability mass function (PMF) and cumulative distribution function (CDF), rather than a continuous PDF.
+- **Distributional inference:** Implemented private research uses market information for parameter estimation and model-based distribution recovery; the underlying model specifications and decision rules are not disclosed.
 - **Statistical evaluation:** Recorded outcomes permit transparent settlement, performance attribution and comparisons by market and competition.
 - **Economic value:** Forecasting quality and simulated payoff are different objects; a positive historical ROI does not, by itself, establish a stable predictive edge.
 - **Research integrity:** Distinguishing retrospective analysis, actual public pre-match publication and executable quotes is fundamental to valid inference.
 
-### Next research questions — beyond the implemented private Poisson translation
+### Next research questions
 
-1. **Distributional extensions:** Beyond the implemented Poisson-equivalent OU inference, can richer models and multiple AH/OU quotations identify more of the total-goals and goal-difference distributions without overly restrictive assumptions?
-2. **Out-of-sample probability calibration:** Are inferred match-event probabilities empirically calibrated against subsequent outcomes, using reliability diagrams, proper scoring rules and uncertainty intervals? This is distinct from *calibrating a Poisson parameter to market odds*, which has already been implemented.
+1. **Distributional extensions:** How robust is market-implied inference across alternative model assumptions and information sets?
+2. **Out-of-sample probability calibration:** How well do inferred probabilities match observed frequencies in genuinely prospective data?
 3. **Market benchmarks:** How does an independent model compare with appropriately margin-adjusted bookmaker consensus and closing prices?
 4. **Path + terminal information:** Does the time path of quotation changes add predictive value beyond the terminal snapshot?
 5. **Cross-league structure:** Do similar handicap lines convey comparable relative-strength information at different team and league levels?
 
-These are motivated extensions, **not completed experimental results**. The private workflow's implemented Poisson-equivalent inference should not be confused with a completed out-of-sample forecast-calibration study. The hosted public repository does not expose the proprietary distributional inference engine or a live model-inference API.
+These questions concern extensions and additional empirical validation, not the absence of implemented private distributional inference. The hosted public app does not expose the proprietary prediction engine or provide live model inference.
 
 ## Run the public dashboard locally
 

@@ -9,14 +9,18 @@ def test_readme_has_live_demo_and_real_screenshot():
     assert "assets/dashboard-overview.png" in readme
     assert (ROOT / "assets" / "dashboard-overview.png").is_file()
 
-def test_readme_distinguishes_private_parametric_inference_and_live_returns():
+def test_readme_distinguishes_private_inference_and_live_returns():
     readme = (ROOT / "README.md").read_text(encoding="utf-8").lower()
     for phrase in (
-        "poisson-equivalent", "parametric", "research directions", "private p1/p2",
-        "out-of-sample probability calibration", "nonparametrically",
-        "retrospective", "simulated", "hosted public instance", "not verified live-trading",
+        "market-implied parameter estimation", "model-based distribution recovery",
+        "quantitative pricing comparisons", "financial economics",
+        "out-of-sample probability calibration", "retrospective", "simulated",
+        "hosted public app", "not verified live-trading",
     ):
         assert phrase in readme
+    for over_disclosure in ("poisson", "private p1/p2", "fixed over/under 2.5", "nonparametrically"):
+        assert over_disclosure not in readme
+
 
 def test_technical_reference_preserved():
     ref = (ROOT / "docs" / "maintainer_reference.md").read_text(encoding="utf-8")
