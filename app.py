@@ -224,6 +224,17 @@ st.markdown("""<style>
 [data-testid="stMetricLabel"] { color:#a6bad0; }
 [data-testid="stMetricValue"] { color:#ecf4ff; }
 hr { border-color:#23364e; }
+/* FMA_V41_STYLE_START */
+.fma-film-intro {
+  border-radius:16px; border:1px solid #2d5060;
+  background:linear-gradient(135deg,#132b40,#0e302d);
+  padding:1.25rem 1.35rem; min-height:100%;
+}
+.fma-film-intro h3 { color:#eff9ff; margin:.55rem 0 .75rem; font-size:1.35rem;
+  font-weight:740; letter-spacing:-.01em; line-height:1.35; }
+.fma-film-intro p { color:#b9cfdb; font-size:.92rem; line-height:1.7; }
+.fma-film-intro .fma-film-caveat { color:#95b1bf; font-size:.78rem; }
+/* FMA_V41_STYLE_END */
 </style>""", unsafe_allow_html=True)
 
 release, all_rows = load_unified_history(ROOT)
@@ -339,6 +350,21 @@ if page == "Pre-match archive":
 
 elif page == "Performance overview":
     st.markdown("<div class='eyebrow'>Performance / unified historical research</div>", unsafe_allow_html=True)
+    # FMA_V41_VIDEO_START
+    film_intro, film_player = st.columns([1, 1.65], gap="large")
+    with film_intro:
+        st.markdown("""<section class="fma-film-intro">
+          <div class="eyebrow">Research system in motion</div>
+          <h3>From market inputs to research outcomes</h3>
+          <p>Explore our 52-second visual overview of prematch Asian Handicap,
+          Asian Total and fixed 2.5-goal market information, public research
+          signals and historical simulated performance.</p>
+          <p class="fma-film-caveat">Conceptual visualization · Simulated historical results</p>
+        </section>""", unsafe_allow_html=True)
+    with film_player:
+        st.video(str(ROOT / "assets" / "fma-research-in-motion-v4-1.mp4"), autoplay=False)
+    # FMA_V41_VIDEO_END
+
     a, b, c, d = st.columns(4, gap="medium")
     a.metric("Settled signals", f"{metrics['settled_signals']}")
     b.metric("Weighted ROI", "—" if metrics["roi_pct"] is None else f"{metrics['roi_pct']:+.2f}%")

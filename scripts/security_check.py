@@ -2,12 +2,27 @@
 """Pre-publication guard for curated data and accidentally included private files."""
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+# FMA_V41_APPROVED_VIDEO_START
+# One checksum-frozen public promotional asset; all other large files remain blocked.
+APPROVED_FILM_PATH = "assets/fma-research-in-motion-v4-1.mp4"
+APPROVED_FILM_SHA256 = "be1fa8f4fc05c98b48e725d6e6d9d30ab431ddb2ce32b037e690fd6be72d040b"
+APPROVED_FILM_SIZE = 7293729
+
+def is_approved_public_video(path: Path) -> bool:
+    if path.relative_to(ROOT).as_posix() != APPROVED_FILM_PATH:
+        return False
+    if path.stat().st_size != APPROVED_FILM_SIZE:
+        return False
+    return hashlib.sha256(path.read_bytes()).hexdigest() == APPROVED_FILM_SHA256
+# FMA_V41_APPROVED_VIDEO_END
+
 sys.path.insert(0, str(ROOT))
 from fma_portfolio.release import validate_release
 from fma_portfolio.daily_publish import make_manifest, MANIFEST_SCHEMA
@@ -39,7 +54,7 @@ def run() -> list[str]:
             failures.append(f"Forbidden directory: {relative}")
         if path.name.startswith(".env") or path.name == "secrets.toml" or path.suffix.lower() in FORBIDDEN_SUFFIXES:
             failures.append(f"Forbidden file: {relative}")
-        if path.stat().st_size > 2_000_000:
+        if path.stat().st_size > 2_000_000 and not is_approved_public_video(path):
             failures.append(f"Unexpected large file: {relative}")
         if path.suffix.lower() in {".py", ".md", ".yml", ".yaml", ".toml", ".json", ".txt", ".sh"}:
             content = path.read_text(encoding="utf-8", errors="replace")
