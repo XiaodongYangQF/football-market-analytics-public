@@ -13,7 +13,7 @@ A public, interactive research portfolio exploring what football betting markets
 
 https://github.com/user-attachments/assets/d18b6d63-003a-49cc-b0a6-2577f115b9b8
 
-**52-second research overview** · [Download MP4](assets/fma-research-in-motion-v4-1.mp4?raw=1) · [Explore the interactive dashboard](https://football-market-analytics.streamlit.app/)
+**52-second research overview** · [Download MP4](assets/fma-research-in-motion-v4-1.mp4) · [Explore the interactive dashboard](https://football-market-analytics.streamlit.app/)
 
 *Conceptual workflow visualization using curated historical research records and **simulated** performance. This is not verified live-trading or an independently timestamped prospective track record.*
 <!-- FMA_V41_VIDEO_END -->
