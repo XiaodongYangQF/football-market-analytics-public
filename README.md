@@ -8,6 +8,16 @@ A public, interactive research portfolio exploring what football betting markets
 
 [**Explore the live dashboard**](https://football-market-analytics.streamlit.app/) · [Browse the forecast ledger](https://football-market-analytics.streamlit.app/) · [Research methodology](docs/methodology.md) · [Public pre-match receipts](https://github.com/XiaodongYangQF/football-market-analytics-public/issues)
 
+<!-- FMA_V41_VIDEO_START -->
+## Research System in Motion
+
+[![Watch the FMA V4.1 research film — 52 seconds](assets/fma-v4-1-poster.jpg)](assets/fma-research-in-motion-v4-1.mp4)
+
+**[Watch the full 52-second research overview](assets/fma-research-in-motion-v4-1.mp4)** · [Explore the interactive dashboard](https://football-market-analytics.streamlit.app/)
+
+*Conceptual workflow visualization using curated historical research records and **simulated** performance. This is not verified live-trading or an independently timestamped prospective track record.*
+<!-- FMA_V41_VIDEO_END -->
+
 ![Football Market Analytics performance dashboard showing simulated returns and the AH versus OU comparison](assets/dashboard-overview.png)
 
 *The dashboard shows historical **simulated** performance, including retrospective rule application. It is not verified live-trading performance, and the displayed ROI does not establish an out-of-sample edge.*
