@@ -88,8 +88,17 @@ def test_saved_forecast_uses_original_p7_4_schema():
     assert merge_records(restored,restored)[1]==0
 
 
-def test_public_fixtures_are_opt_in():
-    assert load_fixtures(Path(__file__).resolve().parents[1]/'data/fixtures.csv','E0') == []
+def test_public_fixtures_use_reviewed_six_field_snapshot():
+    # The public fixture list is now intentionally populated. Validate the
+    # allowlisted contract, not the obsolete P8.1B header-only placeholder.
+    import csv
+    from fma_portfolio.p7.fixtures_store import FIELDS
+    path = Path(__file__).resolve().parents[1] / 'data/fixtures.csv'
+    with path.open(encoding='utf-8-sig', newline='') as handle:
+        reader = csv.DictReader(handle)
+        assert tuple(reader.fieldnames or ()) == FIELDS
+        assert all(None not in row and set(row) == set(FIELDS) for row in reader)
+    assert load_fixtures(path, 'E0')
 
 
 def test_no_private_model_sources_bundled():
@@ -133,7 +142,14 @@ def test_original_owner_project_remains_outside_repository():
     repo=Path(__file__).resolve().parents[1]
     assert not (repo/'deployment/public_web/web_app/model_worker.py').exists()
     assert not (repo/'.env').exists()
-    assert not (repo/'data/fixtures.csv').read_text().count('\n')>1
+    # Public schedule metadata may be published, but it must contain only
+    # the six approved fixture fields and never private model/source columns.
+    import csv
+    from fma_portfolio.p7.fixtures_store import FIELDS
+    with (repo/'data/fixtures.csv').open(encoding='utf-8-sig', newline='') as handle:
+        reader = csv.DictReader(handle)
+        assert tuple(reader.fieldnames or ()) == FIELDS
+        assert all(None not in row and set(row) == set(FIELDS) for row in reader)
 
 
 def test_owner_local_actual_child_protocol_with_stub(tmp_path, monkeypatch):

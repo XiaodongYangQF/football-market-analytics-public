@@ -56,8 +56,19 @@ def test_owner_mode_reads_local_p7_public_fixtures(monkeypatch, tmp_path):
     assert ('Atlético Madrid', 'Ath Madrid') in team_options(rows)
 
 
-def test_owner_mode_without_original_schedule_falls_back_to_safe_empty(monkeypatch, tmp_path):
-    published = Path(__file__).resolve().parents[1] / 'data' / 'fixtures.csv'
+def test_owner_mode_without_original_schedule_falls_back_to_public_snapshot(tmp_path):
+    published = tmp_path / 'public' / 'fixtures.csv'
+    create_public_fixture(published)
+    path, local = fixture_source(published, owner_local=True, project_root=str(tmp_path))
+    assert local is False
+    assert path == published
+    rows = load_fixtures(path, 'SP1')
+    assert len(rows) == 1
+    assert rows[0]['canonical_home'] == 'Ath Madrid'
+
+
+def test_owner_mode_without_any_schedule_falls_back_to_safe_empty(tmp_path):
+    published = tmp_path / 'public' / 'missing.csv'
     path, local = fixture_source(published, owner_local=True, project_root=str(tmp_path))
     assert local is False
     assert path == published

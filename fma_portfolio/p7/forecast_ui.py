@@ -13,7 +13,7 @@ import os
 
 import streamlit as st
 from .fixtures_store import load_fixtures, fixture_options, team_options
-from .cloud_fixtures import configured_token, fetch_api_schedule, manual_team_choices, FixtureFeedUnavailable
+from fma_portfolio.eligibility import load_policy
 from .fixture_source import fixture_source
 from .forecast_contract import validate_request, InvalidForecastInput
 from fma_portfolio.eligibility import classify_fixture
@@ -31,16 +31,13 @@ LEAGUES = {'Premier League':'E0','Bundesliga':'D1','La Liga':'SP1',
 
 
 
-
-def _hosted_fixture_schedule(league: str) -> list[dict]:
-    """Cached server-side fetch; token is never sent to the browser."""
-    return fetch_api_schedule(league, api_token=configured_token())
-
-# Enable caching in real Streamlit; permit minimal import-test stubs.
-if hasattr(st, "cache_data"):
-    _hosted_fixture_schedule = st.cache_data(
-        ttl=3600, max_entries=6, show_spinner=False
-    )(_hosted_fixture_schedule)
+def manual_team_choices(league: str) -> list[tuple[str, str]]:
+    """Fallback from already public club metadata; never reads Private data."""
+    try:
+        roster = load_policy()['leagues'][league]['roster']
+        return [(team, team) for team in sorted(roster, key=str.casefold)]
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
 
 
 def _price(label: str, key: str):
@@ -69,15 +66,6 @@ def _match_picker() -> tuple[str, str, str, date, str, str]:
     except (OSError, ValueError):
         st.error('Fixture schedule could not be read. Please use Manual match.')
         scheduled = []
-    hosted_feed = False
-    if not uses_owner_schedule and not scheduled and configured_token():
-        try:
-            scheduled = _hosted_fixture_schedule(league)
-            hosted_feed = bool(scheduled)
-        except FixtureFeedUnavailable:
-            st.warning('The hosted fixture provider is temporarily unavailable. Use Manual match.')
-    if hosted_feed:
-        st.caption('Football data provided by the Football-Data.org API · scheduled matches only · refreshed hourly.')
     if uses_owner_schedule:
         st.caption('Owner-local: using the existing P7 Public schedule (not bundled in GitHub).')
     if mode == 'From schedule':
@@ -96,8 +84,8 @@ def _match_picker() -> tuple[str, str, str, date, str, str]:
                 f=options[ix]
             else:
                 if not scheduled:
-                    st.info('No mapped upcoming fixtures are available. Configure the hosted fixture API in Streamlit Secrets, '
-                            'or choose Manual match to select teams.')
+                    st.info('No published fixtures are available for this competition. '
+                            'Choose Manual match, or update the approved GitHub data/fixtures.csv snapshot.')
                 else:
                     st.info('No upcoming fixtures in the schedule. Choose All or Manual match.')
                 f=None
