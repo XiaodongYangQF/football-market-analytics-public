@@ -2,7 +2,6 @@
 from pathlib import Path
 
 from fma_portfolio.p7.fixtures_store import load_fixtures, fixture_options
-from fma_portfolio.p7.forecast_ui import manual_team_choices
 
 ROOT = Path(__file__).resolve().parents[1]
 LEAGUES = ("E0", "D1", "SP1", "I1", "F1")
@@ -23,8 +22,25 @@ def test_offline_picker_has_upcoming_fixtures_in_reference_snapshot():
 
 
 def test_manual_team_roster_remains_available():
-    assert ("Aston Villa", "Aston Villa") in manual_team_choices("E0")
-    assert ("Sunderland", "Sunderland") in manual_team_choices("E0")
+    import subprocess
+    import sys
+
+    script = (
+        "import sys, types; "
+        "sys.modules['streamlit'] = types.ModuleType('streamlit'); "
+        "from fma_portfolio.p7.forecast_ui import manual_team_choices; "
+        "teams = manual_team_choices('E0'); "
+        "assert ('Aston Villa', 'Aston Villa') in teams; "
+        "assert ('Sunderland', 'Sunderland') in teams"
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_forecast_ui_does_not_depend_on_hosted_fixture_api():
