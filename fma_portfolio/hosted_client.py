@@ -68,8 +68,8 @@ def _config(environ: dict | None = None) -> tuple[str, str, set[str]] | None:
         return None
     token = env.get('FMA_HOSTED_FORECAST_API_TOKEN', '')
     allowed = {email.strip().casefold() for email in env.get('FMA_HOSTED_ALLOWED_EMAILS','').split(',') if email.strip()}
-    if len(token) < 32 or any(c in token for c in '\r\n') or not allowed or any('@' not in email for email in allowed):
-        raise HostedConfigurationError('Hosted forecast requires a token and OIDC email allowlist')
+    if len(token) < 32 or any(c in token for c in '\r\n'):
+        raise HostedConfigurationError('Hosted forecast requires a valid server-side token')
     url = _endpoint(env.get('FMA_HOSTED_FORECAST_API_URL',''),
                     allow_loopback_http=env.get('FMA_HOSTED_ALLOW_LOOPBACK_HTTP') == '1')
     return url, token, allowed
@@ -95,7 +95,7 @@ def hosted_authorized(user: object) -> bool:
 
 
 def predict_hosted(request: dict, *, timeout_seconds: int = 1150) -> dict:
-    """Called exclusively from the authenticated server-side Streamlit handler."""
+    """Called exclusively from the server-side Streamlit handler."""
     cfg = _config()
     if cfg is None:
         raise ForecastUnavailable('Hosted forecast pilot is disabled')

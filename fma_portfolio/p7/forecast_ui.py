@@ -18,7 +18,7 @@ from .fixture_source import fixture_source
 from .forecast_contract import validate_request, InvalidForecastInput
 from fma_portfolio.eligibility import classify_fixture
 from .owner_local import predict, ForecastUnavailable, ForecastIneligible, owner_local_enabled
-from fma_portfolio.hosted_client import hosted_authorized, hosted_configured, predict_hosted
+from fma_portfolio.hosted_client import hosted_configured, predict_hosted
 from .saved_forecasts import (create_record, archive_json, archive_csv, parse_archive,
                              merge_records, row_for_display, SavedForecastsError)
 from .public_theme import (apply_public_theme, sidebar_brand, page_hero, section_header,
@@ -208,18 +208,11 @@ def forecast_page():
               kicker='FOOTBALL MARKET ANALYTICS · PUBLIC',
               subtitle='Select a fixture, provide the AH and OU prices, and explore model-generated market forecasts.')
     local = owner_local_enabled()
-    hosted = not local and hosted_authorized(getattr(st, 'user', None))
+    hosted = not local and hosted_configured()
     if not local and not hosted:
-        if hosted_configured():
-            st.info('Hosted prediction pilot is restricted to authenticated, allowlisted research accounts. Public visitors can browse the forecast archive and performance; no demo predictions are fabricated.')
-            signed_in = bool(getattr(getattr(st, 'user', None), 'is_logged_in', False))
-            if not signed_in and hasattr(st, 'login'):
-                if st.button('Sign in for research pilot', key='pub_hosted_sign_in'):
-                    st.login()
-        else:
-            st.info('Hosted real-time forecasts are not enabled. Owner-local Mac mode can run the existing frozen model; no substitute predictions are generated.')
+        st.info('Hosted real-time forecasts are not enabled. Owner-local Mac mode can run the existing frozen model; no substitute predictions are generated.')
     if hosted:
-        st.caption('Authenticated prediction pilot · real frozen model · server-side quota applies.')
+        st.caption('Guest predictions · real frozen model · server-side quota applies.')
     _,workflow,_=st.columns([1,10,1],gap='small')
     with workflow:
         with st.container(border=True,key='pub_match_picker_panel'):
